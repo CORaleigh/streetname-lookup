@@ -36,7 +36,7 @@ function getCount(street){
 
     var featureLayer = "https://services.arcgis.com/v400IkDOw1ad7Yad/arcgis/rest/services/Wake_County_Street_Names/FeatureServer/0";
 
-	var where = `${searchField} like '${street.toUpperCase()}%' or ${searchField} like '${street.toUpperCase().replace(' ', '')`;
+	var where = `${searchField} like '${street.toUpperCase()}%' or ${searchField} like '${street.toUpperCase().replace(' ', '')}`;
     var xmlhttp = new XMLHttpRequest();
     var url = featureLayer + "/query?where="+where+"&outFields=*&returnGeometry=false&returnCountOnly=true&f=json"
 
@@ -63,7 +63,7 @@ function checkStreetName(street,offset,count){
 
     var featureLayer = "https://services.arcgis.com/v400IkDOw1ad7Yad/arcgis/rest/services/Wake_County_Street_Names/FeatureServer/0";
 
-	var where = `${searchField} like '${street.toUpperCase()}%' or ${searchField} like '${street.toUpperCase().replace(' ', '')`;
+	var where = `${searchField} like '${street.toUpperCase()}%' or ${searchField} like '${street.toUpperCase().replace(' ', '')}`;
     var xmlhttp = new XMLHttpRequest();
     var url = featureLayer + "/query?where="+where+`&outFields=*&returnGeometry=false&orderByFields=ST_NAME ASC, ST_TYPE ASC, DIR_PREFIX ASC&resultRecordCount=${count.toString()}&resultOffset=${offset.toString()}&f=json`
 
