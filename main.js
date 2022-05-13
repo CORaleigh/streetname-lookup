@@ -20,7 +20,7 @@ function loadResults(text,offset, count) {
       block.heading = `${result.attributes['DIR_PREFIX'] === null ? '' : result.attributes['DIR_PREFIX']} ${result.attributes['ST_NAME']} ${result.attributes['ST_TYPE']}`;
       const content = document.createElement('div');
       content.innerHTML += `Jurisdiction: ${getJurisdiction(results.fields,result.attributes['PLAN_JURIS'])}<br>`;
-      content.innerHTML += `Subdivision: ${result.attributes['SUBDIV_NAME']}<br>`; 
+      content.innerHTML += `Subdivision: ${titleCase(result.attributes['SUBDIV_NAME'])}<br>`; 
             content.innerHTML += `Status: ${result.attributes['STATUS'] === 'A'? 'Active':'Reserved'}<br>`;    
 
             content.innerHTML += `Entered: ${new Date(result.attributes['DATE_ST_ENTERED']).toLocaleDateString('en-US')}<br>`;       
@@ -85,4 +85,10 @@ function checkStreetName(street,offset,count){
     }
 }
 
-
+function titleCase(str) {
+  str = str.toLowerCase().split(' ');
+  for (var i = 0; i < str.length; i++) {
+    str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1); 
+  }
+  return str.join(' ');
+}
