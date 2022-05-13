@@ -1,0 +1,126 @@
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>Calcite Components: Core concepts</title>
+
+  <style>
+    html,
+    body,
+    #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+    .container {
+      margin: 1em;
+    }
+    
+    .card-content {
+      display: none;
+    }
+    
+    calcite-card {
+      margin-bottom: 0.5em;
+    }
+    .search {
+      display: flex;
+      width: 100%;
+    }
+    calcite-input {
+      width: 100%;
+    }
+  </style>
+  <script type="module" src="https://js.arcgis.com/calcite-components/1.0.0-beta.81/calcite.esm.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/1.0.0-beta.81/calcite.css" />
+  <script src="main.js"></script>
+</head>
+
+<body>
+  <div class="container">
+
+    <div class="search">
+
+      <calcite-dropdown>
+    <calcite-button slot="dropdown-trigger" icon-end="caret-down" appearance="outline" color="neutral"></calcite-button>
+        <calcite-dropdown-group selection-mode="single" group-title="Search By">
+          <calcite-dropdown-item>Street Name</calcite-dropdown-item>
+          <calcite-dropdown-item>Application #</calcite-dropdown-item>
+          <calcite-dropdown-item>Subdivision</calcite-dropdown-item>
+
+          </calcite-dropdown-group>
+        </calcite-dropdown>
+      <calcite-input clearable icon="search" label="Street Name" placeholder="Enter Street Name" scale="l"
+    type="search"></calcite-input>
+  <calcite-button icon-end="search" scale="l" onclick="search()"></calcite-button>      
+    </div>
+  <br/>
+        <calcite-pagination hidden num="1" start="1" total="0"></calcite-pagination>
+  <calcite-list>
+
+
+</calcite-list>
+
+  </div>
+</body>
+
+<script>
+  let searchField = 'ST_NAME';
+  document.querySelector('calcite-pagination').addEventListener('calcitePaginationChange', (event) => {
+    setTimeout(() => {
+          const page = parseInt(document.querySelector('calcite-pagination').shadowRoot.querySelector('.page.is-selected').textContent)-1;
+    const text = document.querySelector('calcite-input').value;
+    console.log(page*10);
+    loadResults(text, page*10, 10);
+    },500);
+
+  });
+  document.querySelector('calcite-dropdown').addEventListener('calciteDropdownSelect', (event) => {
+    requestAnimationFrame(() => {
+          const selection = event.target.querySelector('calcite-dropdown-item[active]').textContent;
+    const input = document.querySelector('calcite-input');
+      input.placeholder = `Enter ${selection}`;
+      input.value = '';
+      if (selection==='Street Name') {
+        searchField = 'ST_NAME';
+      }
+      if (selection==='Application #') {
+        searchField = 'APPL_NUM';
+      }
+      if (selection==='Subdivision') {
+        searchField = 'SUBDIV_NAME';
+      }      
+    });
+
+    
+  });
+  document.querySelector('calcite-input').addEventListener('keydown', (event) => {
+    if(event.key === 'Enter') {
+       search();      
+    }
+  });
+  const search = () => {
+    const text = document.querySelector('calcite-input').value;
+    const count= getCount(text)['count'];
+          const pgn = document.querySelector('calcite-pagination');
+    if (count > 10) {
+      pgn.removeAttribute('hidden');
+      const pages = Math.floor(count/10);
+
+      pgn.total = count;
+      pgn.start = 1;
+      pgn.num = 10;
+    } else {
+      pgn.setAttribute('hidden','');
+    }
+
+    loadResults(text,0,10);
+  }
+  
+  
+  
+</script>
+
+</html>
