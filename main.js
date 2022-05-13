@@ -23,8 +23,8 @@ function loadResults(text,offset, count) {
       content.innerHTML += `Subdivision: ${result.attributes['SUBDIV_NAME'] ? titleCase(result.attributes['SUBDIV_NAME']):''}<br>`; 
             content.innerHTML += `Status: ${result.attributes['STATUS'] === 'A'? 'Active':'Reserved'}<br>`;    
 
-            content.innerHTML += `Entered: ${new Date(result.attributes['DATE_ST_ENTERED']).toLocaleDateString('en-US')}<br>`;       
-            content.innerHTML += `Approved: ${new Date(result.attributes['DATE_APPROVED']).toLocaleDateString('en-US')}<br>`; 
+            content.innerHTML += `Entered: ${result.attributes['DATE_ST_ENTERED'] ? new Date(result.attributes['DATE_ST_ENTERED']).toLocaleDateString('en-US') : ''}<br>`;       
+            content.innerHTML += `Approved: ${result.attributes['DATE_APPROVED'] ? new Date(result.attributes['DATE_APPROVED']).toLocaleDateString('en-US') : ''}<br>`; 
             content.innerHTML += `Application #: ${result.attributes['APPL_NUM']}<br>`;       
       block.appendChild(content);
 
